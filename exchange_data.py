@@ -6,9 +6,16 @@ current price through the exchange's api
 import requests, json
 
 #bitmex
-def get_bitmex(coin):
+def get_bitmex(pair):
     data = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
-    for x in data:
-        print(x['symbol'])
-        print(format(x['lastPrice'], 'f'))
-get_bitmex("whats ui")
+    coin_dict = {}
+    for i in data:
+        coin_dict[i['symbol']] = format(i['lastPrice'], 'f')
+    try:
+        return coin_dict[pair.upper()]
+    except:
+        return "Pair does not exist on BitMex."
+
+# binance
+def get_binance(pair):
+        pass
