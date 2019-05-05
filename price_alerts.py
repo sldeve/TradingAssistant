@@ -1,5 +1,6 @@
 import logging
 import telegram
+from exchange_data import get_bitmex, get_binance
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 """
@@ -24,6 +25,23 @@ dispatcher.add_handler(help_handler)
 
 # /setalert command
 def setalert(update, context):
+    message_text = update.message.text[10::]
+    is_valid_request(message_text)
+
+
+setalert_handler = CommandHandler('setalert', setalert)
+dispatcher.add_handler(setalert_handler)
+
+# checks if the alert request is valid
+def is_valid_request(msg):
+    # remove whitespace and split exchange, trading pair and price into a list
+    msg = msg.replace(" ","")
+    msg = msg.split(",")
+    if msg[0].lower() == "bitmex" and get_bitmex(msg[2]) == True:
+         store_request(msg)
+
+# store_request in database
+def store_request(data):
     pass
 
 updater.start_polling()

@@ -14,7 +14,7 @@ def get_bitmex(pair):
     try:
         return coin_dict[pair.upper()]
     except:
-        return "Pair does not exist on BitMex."
+        return False
 
 # binance
 def get_binance(pair):
