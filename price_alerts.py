@@ -32,7 +32,6 @@ def setalert(update, context):
     message_text = update.message.text[10::]
     is_valid_request(message_text)
 
-
 setalert_handler = CommandHandler('setalert', setalert)
 dispatcher.add_handler(setalert_handler)
 
