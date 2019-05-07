@@ -21,3 +21,12 @@ def get_binance(pair):
         if pair.upper() == i['symbol']:
             return i['lastPrice']
     return False
+
+# qtrade
+def get_qtrade(pair):
+    data = requests.get("https://api.qtrade.io/v1/tickers").json()
+    data =data['data']['markets']
+    for i in data:
+        if i['id_hr'].replace('_','') == pair.upper():
+            return i['last']
+    return False
