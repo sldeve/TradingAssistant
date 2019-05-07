@@ -34,9 +34,10 @@ def get_qtrade(pair):
 
 def get_price(exchange, pair):
     if exchange == 'bitmex':
-        get_bitmex(pair)
+        return get_bitmex(pair)
     elif exchange == 'binance':
-        get_binance(pair)
+        return get_binance(pair)
     elif exchange == 'qtrade':
-        get_qtrade(pair)
-    return False
+        return get_qtrade(pair)
+    else:
+        return False

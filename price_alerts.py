@@ -31,6 +31,7 @@ dispatcher.add_handler(help_handler)
 def setalert(update, context):
     message_text = update.message.text[10::]
     is_valid_request(message_text)
+    context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was Set Successfully.")
 
 setalert_handler = CommandHandler('setalert', setalert)
 dispatcher.add_handler(setalert_handler)
@@ -39,11 +40,9 @@ dispatcher.add_handler(setalert_handler)
 def is_valid_request(msg):
     # remove whitespace and split the chosen exchange,trading pair and price into a list
     msg = msg.replace(" ","").split(",")
-    if get_price(msg[0].lower(),msg[1].lower()):
-         store_request(msg)
-
-# store_request in database
-def store_request(data):
-    pass
+    if get_price(msg[0].lower(),msg[1].lower()) != False:
+        f = open("alert_requests.txt", "a")
+        f.write(','.join(msg)+'\n')
+        f.close()
 
 updater.start_polling()
