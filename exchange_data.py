@@ -1,5 +1,5 @@
 """
-Module containing functions that fetch current cryptocurrency prices.
+Module containing functions that fetch current cryptocurrency prices from exchanges.
 Each function checks for active cryptocurrencies and requests the 
 current price through the exchange's api
 """

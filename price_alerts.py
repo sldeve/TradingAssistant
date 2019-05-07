@@ -6,19 +6,21 @@ from telegram.ext import Updater
 """
 The following Token belongs to a test bot created during the 
 development of the main bot. This is not the token that belongs 
-to the bot being used in production.
+to the bot that will be used in production.
 """
 
-updater = Updater(token="820246863:AAHtUNlQvP4TaXO8GOYZ4bMqcxJzjOADKk0",use_context=True)
+updater = Updater(token="820246863:AAHtUNlQvP4TaXO8GOYZ4bMqcxJzjOADKk0", use_context=True)
 
 dispatcher = updater.dispatcher
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
+instructions = "This is the Cryptocurrency Price Alert Bot\n To set a price alert,use the setalert command and enter an exchange trading pair and price as follows:\n /setalert binance,btcusd,20000"
+
 # /help command
 def help(update, context):
-    context.bot.send_message(chat_id=update.message.chat_id, text="This is the Cryptocurrency Price Alert Bot")
+    context.bot.send_message(chat_id=update.message.chat_id, text=instructions)
 
 help_handler = CommandHandler('help', help)
 dispatcher.add_handler(help_handler)
@@ -34,9 +36,8 @@ dispatcher.add_handler(setalert_handler)
 
 # checks if the alert request is valid
 def is_valid_request(msg):
-    # remove whitespace and split exchange, trading pair and price into a list
-    msg = msg.replace(" ","")
-    msg = msg.split(",")
+    # remove whitespace and split the chosen exchange,trading pair and price into a list
+    msg = msg.replace(" ","").split(",")
     if msg[0].lower() == "bitmex" and get_bitmex(msg[2]) == True:
          store_request(msg)
 
