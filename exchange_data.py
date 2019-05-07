@@ -8,14 +8,16 @@ import requests, json
 #bitmex
 def get_bitmex(pair):
     data = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
-    coin_dict = {}
     for i in data:
-        coin_dict[i['symbol']] = format(i['lastPrice'], 'f')
-    try:
-        return coin_dict[pair.upper()]
-    except:
-        return False
+        if i['symbol']  == pair.upper(): 
+            return format(i['lastPrice'], 'f')
+    return False
 
 # binance
 def get_binance(pair):
-        pass
+    data = requests.get("https://api.binance.com/api/v1/ticker/24hr").content.decode("utf-8")
+    data = json.loads(''.join(data))
+    for i in data:
+        if pair.upper() == i['symbol']:
+            return i['lastPrice']
+    return False

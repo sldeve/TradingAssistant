@@ -16,7 +16,9 @@ dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
-instructions = "This is the Cryptocurrency Price Alert Bot\n To set a price alert,use the setalert command and enter an exchange trading pair and price as follows:\n /setalert binance,btcusd,20000"
+instructions = ("This is the Cryptocurrency Price Alert Bot\n" +
+"To set a price alert,use the setalert command and enter an exchange trading pair and price as follows:\n" + 
+"/setalert binance,btcusd,20000")
 
 # /help command
 def help(update, context):
