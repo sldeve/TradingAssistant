@@ -1,6 +1,6 @@
 import logging
 import telegram
-from exchange_data import get_bitmex, get_binance
+from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 """
@@ -40,7 +40,7 @@ dispatcher.add_handler(setalert_handler)
 def is_valid_request(msg):
     # remove whitespace and split the chosen exchange,trading pair and price into a list
     msg = msg.replace(" ","").split(",")
-    if msg[0].lower() == "bitmex" and get_bitmex(msg[2]) == True:
+    if get_price(msg[0].lower(),msg[1].lower()):
          store_request(msg)
 
 # store_request in database

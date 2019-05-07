@@ -3,6 +3,7 @@ Module containing functions that fetch current cryptocurrency prices from exchan
 Each function checks for active cryptocurrencies and requests the 
 current price through the exchange's api
 """
+
 import requests, json
 
 #bitmex
@@ -30,3 +31,11 @@ def get_qtrade(pair):
         if i['id_hr'].replace('_','') == pair.upper():
             return i['last']
     return False
+
+def get_price(exchange, pair):
+    if exchange == 'bitmex':
+        get_bitmex(pair)
+    elif exchange == 'binance':
+        get_binance(pair)
+    elif exchange == 'qtrade':
+        get_qtrade(pair)
