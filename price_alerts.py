@@ -3,6 +3,7 @@ import telegram
 from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
+
 """
 The following Token belongs to a test bot created during the 
 development of the main bot. This is not the token that belongs 
@@ -43,6 +44,7 @@ def is_valid_request(msg,chat_id):
     # remove whitespace and split the chosen exchange,trading pair and price into a list
     msg = msg.replace(" ","").split(",")
     cur_price = float(get_price(msg[0].lower(),msg[1].lower()))
+    # if request is valid, add to 'database'
     if cur_price != False:
         if cur_price < float(msg[2]):
             trigger = '>'
@@ -52,7 +54,7 @@ def is_valid_request(msg,chat_id):
         f.write(','.join(msg)+","+str(chat_id)+","+trigger+'\n')
         f.close()
 
-# checks if a set alert has been reached
+# bot continuously checks if an alert has been reached
 def check_prices(context):
     f = open("alert_requests.txt", "r")
     lines = f.readlines()
@@ -67,6 +69,7 @@ def check_prices(context):
         else:
             f.write(",".join(line))
 
+# bot checks prices with an interval of every 5 seconds
 job_check_prices = j.run_repeating(check_prices, interval= 5, first =0)     
 
 
