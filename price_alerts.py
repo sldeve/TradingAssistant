@@ -11,6 +11,8 @@ to the bot that will be used in production.
 
 updater = Updater(token="820246863:AAHtUNlQvP4TaXO8GOYZ4bMqcxJzjOADKk0", use_context=True)
 
+j = updater.job_queue
+
 dispatcher = updater.dispatcher
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -30,19 +32,37 @@ dispatcher.add_handler(help_handler)
 # /setalert command
 def setalert(update, context):
     message_text = update.message.text[10::]
-    is_valid_request(message_text)
+    is_valid_request(message_text, update.message.chat_id)
     context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was Set Successfully.")
 
 setalert_handler = CommandHandler('setalert', setalert)
 dispatcher.add_handler(setalert_handler)
 
 # checks if the alert request is valid
-def is_valid_request(msg):
+def is_valid_request(msg,chat_id):
     # remove whitespace and split the chosen exchange,trading pair and price into a list
     msg = msg.replace(" ","").split(",")
     if get_price(msg[0].lower(),msg[1].lower()) != False:
         f = open("alert_requests.txt", "a")
-        f.write(','.join(msg)+'\n')
+        f.write(','.join(msg)+","+str(chat_id)+'\n')
         f.close()
+
+# checks if a set alert has been reached
+def check_prices(context):
+    f = open("alert_requests.txt", "r")
+    lines = f.readlines()
+    f.close()
+    f = open("alert_requests.txt", "w")
+    for line in lines:
+        line = line.split(",")
+        cur_price = float(get_price(line[0].lower(),line[1].lower()))
+        if cur_price +float(line[2]) +5 >= float(line[2]) and cur_price -5 <= float(line[2]):
+            response = line[1].upper() + " has reached " + line[2] + " on " + line[0]
+            context.bot.send_message(chat_id = int(line[3]), text = response )
+        else:
+            f.write(",".join(line))
+
+job_check_prices = j.run_repeating(check_prices, interval= 5, first =0)     
+
 
 updater.start_polling()
