@@ -1,16 +1,31 @@
 import logging
 import telegram
+import os
+import sys
 from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-"""
-The following Token belongs to a test bot created during the 
-development of the main bot. This is not the token that belongs 
-to the bot that will be used in production.
-"""
 
-updater = Updater(token="820246863:AAHtUNlQvP4TaXO8GOYZ4bMqcxJzjOADKk0", use_context=True)
+# Getting mode, so we could define run function for local and Heroku setup
+mode = os.getenv("MODE")
+TOKEN = os.getenv("TOKEN")
+if mode == "dev":
+    def run(updater):
+        updater.start_polling()
+elif mode == "prod":
+    def run(updater):
+        PORT = int(os.environ.get("PORT", "8443"))
+        HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
+        # Code from https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks#heroku
+        updater.start_webhook(listen="0.0.0.0",
+                              port=PORT,
+                              url_path=TOKEN)
+        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
+else:
+    sys.exit(1)
+
+updater = Updater(token=TOKEN, use_context=True)
 
 j = updater.job_queue
 
@@ -27,9 +42,6 @@ instructions = ("This is the Cryptocurrency Price Alert Bot\n" +
 def help(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text=instructions)
 
-help_handler = CommandHandler('help', help)
-dispatcher.add_handler(help_handler)
-
 # /setalert command
 def setalert(update, context):
     try:
@@ -40,9 +52,6 @@ def setalert(update, context):
             context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully. Please Enter a Valid Price and Try Again.")
     except:
         context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully. Try Again.")
-
-setalert_handler = CommandHandler('setalert', setalert)
-dispatcher.add_handler(setalert_handler)
 
 # checks if the alert request is valid
 def is_valid_request(msg,chat_id):
@@ -76,8 +85,13 @@ def check_prices(context):
         else:
             f.write(",".join(line))
 
-# bot checks prices with an interval of every 5 seconds
-job_check_prices = j.run_repeating(check_prices, interval= 5, first =0)     
-
+if __name__ == "__main__":
+    # bot checks prices with an interval of every 5 seconds    
+    job_check_prices = j.run_repeating(check_prices, interval= 5, first =0)
+    # create and add handlers to dispatcher
+    help_handler = CommandHandler('help', help)
+    dispatcher.add_handler(help_handler)     
+    setalert_handler = CommandHandler('setalert', setalert)
+    dispatcher.add_handler(setalert_handler)
 
 updater.start_polling()
