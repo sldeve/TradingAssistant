@@ -1,31 +1,12 @@
 import logging
 import telegram
-import os
-import sys
 from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
 
-# Getting mode, so we could define run function for local and Heroku setup
-mode = os.getenv("MODE")
-TOKEN = os.getenv("TOKEN")
-if mode == "dev":
-    def run(updater):
-        updater.start_polling()
-elif mode == "prod":
-    def run(updater):
-        PORT = int(os.environ.get("PORT", "8443"))
-        HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
-        # Code from https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks#heroku
-        updater.start_webhook(listen="0.0.0.0",
-                              port=PORT,
-                              url_path=TOKEN)
-        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
-else:
-    sys.exit(1)
 
-updater = Updater(token=TOKEN, use_context=True)
+updater = Updater(token="PLACE TOKEN HERE", use_context=True)
 
 j = updater.job_queue
 
@@ -93,5 +74,4 @@ if __name__ == "__main__":
     dispatcher.add_handler(help_handler)     
     setalert_handler = CommandHandler('setalert', setalert)
     dispatcher.add_handler(setalert_handler)
-
-updater.start_polling()
+    updater.start_polling()
