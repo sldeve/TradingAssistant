@@ -4,9 +4,7 @@ from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-
-
-updater = Updater(token="PLACE TOKEN HERE", use_context=True)
+updater = Updater(token="INPUT TOKEN HERE", use_context=True)
 
 j = updater.job_queue
 
@@ -27,10 +25,10 @@ def help(update, context):
 def setalert(update, context):
     try:
         message_text = update.message.text[10::]
-        if is_valid_request(message_text, update.message.chat_id):
-            context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was Set Successfully.")
+        if is_valid_request(message_text, update.message.chat_id) == False:
+            context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was Not Set Successfully. Choose a valid price then try again.")
         else:
-            context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully. Please Enter a Valid Price and Try Again.")
+            context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was Set Successfully.")
     except:
         context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully. Try Again.")
 
