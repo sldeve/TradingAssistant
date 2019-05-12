@@ -4,7 +4,7 @@ from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-updater = Updater(token="INPUT TOKEN HERE", use_context=True)
+updater = Updater(token="INSERT TOKEN HERE", use_context=True)
 
 j = updater.job_queue
 
@@ -21,6 +21,17 @@ instructions = ("This is the Cryptocurrency Price Alert Bot\n" +
 def help(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text=instructions)
 
+# /getprice command bot can fetch the price on any supported exchange
+def getprice(update, context):
+    message_text = update.message.text[10::]
+    msg = message_text.replace(" ","").split(",")
+    ans = get_price(msg[0], msg[1])
+    if ans == False:
+        context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully")   
+    else:
+        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1] + " on " + msg[0] + " is " + str(ans))
+
+
 # /setalert command
 def setalert(update, context):
     try:
@@ -36,7 +47,7 @@ def setalert(update, context):
 def is_valid_request(msg,chat_id):
     # remove whitespace and split the chosen exchange,trading pair and price into a list
     msg = msg.replace(" ","").split(",")
-    cur_price = float(get_price(msg[0].lower(),msg[1].lower()))
+    cur_price = get_price(msg[0].lower(),msg[1].lower())
     # if request is valid, add to 'database'
     if cur_price != False:
         if cur_price < float(msg[2]):
@@ -48,6 +59,8 @@ def is_valid_request(msg,chat_id):
         f = open("alert_requests.txt", "a")
         f.write(','.join(msg)+","+str(chat_id)+","+trigger+'\n')
         f.close()
+    else: 
+        return False
 
 # bot continuously checks if an alert has been reached
 def check_prices(context):
@@ -57,7 +70,7 @@ def check_prices(context):
     f = open("alert_requests.txt", "w")
     for line in lines:
         line = line.split(",")
-        cur_price = float(get_price(line[0].lower(),line[1].lower()))
+        cur_price = get_price(line[0].lower(),line[1].lower())
         if line[4][0] == '>'  and cur_price >= float(line[2]) or line[4][0] == '<' and cur_price <= float(line[2]):
             response = line[1].upper() + " has reached " + line[2] + " on " + line[0]
             context.bot.send_message(chat_id = int(line[3]), text = response )

@@ -9,35 +9,44 @@ import requests, json
 #bitmex
 def get_bitmex(pair):
     data = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
+    got_price = False
     for i in data:
-        if i['symbol']  == pair.upper(): 
-            return format(i['lastPrice'], 'f')
-    return False
+        if i['symbol']  == pair.upper():
+            got_price = True 
+            return float(i['lastPrice'])
+    if got_price == False:
+        return False
 
 # binance
 def get_binance(pair):
     data = requests.get("https://api.binance.com/api/v1/ticker/24hr").content.decode("utf-8")
     data = json.loads(''.join(data))
+    got_price = False
     for i in data:
         if pair.upper() == i['symbol']:
-            return i['lastPrice']
-    return False
+            got_price = True
+            return float(i['lastPrice'])
+    if got_price == False:
+        return False
 
 # qtrade
 def get_qtrade(pair):
     data = requests.get("https://api.qtrade.io/v1/tickers").json()
     data =data['data']['markets']
+    got_price = False
     for i in data:
         if i['id_hr'].replace('_','') == pair.upper():
-            return i['last']
-    return False
+            got_price = True
+            return float(i['last'])
+    if got_price == False:
+        return False
 
 def get_price(exchange, pair):
-    if exchange == 'bitmex':
+    if exchange.lower() == 'bitmex':
         return get_bitmex(pair)
-    elif exchange == 'binance':
+    elif exchange.lower() == 'binance':
         return get_binance(pair)
-    elif exchange == 'qtrade':
+    elif exchange.lower() == 'qtrade':
         return get_qtrade(pair)
     else:
         return False
