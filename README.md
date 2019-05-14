@@ -5,7 +5,7 @@ This bot allows users to set price alerts and fetch the current price of any coi
 * Bittrex
 * Qtrade
 
-\nBot Username: @CryptoPriceNotificationBot
+Bot Username: @CryptoPriceNotificationBot
 
 Send the bot the following message to get started:\n
 /help
