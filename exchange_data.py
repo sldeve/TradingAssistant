@@ -29,6 +29,18 @@ def get_binance(pair):
     if got_price == False:
         return False
 
+# bittrex
+def get_bittrex(pair):
+    data = requests.get("https://api.bittrex.com/api/v1.1/public/getmarketsummaries").json()
+    data = data['result']
+    got_price = False
+    for i in data:
+        if i['MarketName'].replace('-','') == pair.upper():
+            got_price = True
+            return float(i['Last'])
+    if got_price == False:
+        return False
+
 # qtrade
 def get_qtrade(pair):
     data = requests.get("https://api.qtrade.io/v1/tickers").json()
@@ -50,3 +62,4 @@ def get_price(exchange, pair):
         return get_qtrade(pair)
     else:
         return False
+

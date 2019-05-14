@@ -14,8 +14,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 instructions = ("This is the Cryptocurrency Price Alert Bot\n" +
-"To set a price alert,use the setalert command and enter an exchange trading pair and price as follows:\n" + 
-"/setalert binance,btcusd,20000")
+"To set a price alert,use the setalert command and enter an exchange, trading pair and price as follows:\n" + 
+"/setalert binance,btcusdc,20000\n" + "To get the current price of a coin on a supported exchange use the getprice command:\n"+
+"/getprice qtrade, nyzobtc ")
 
 # /help command
 def help(update, context):
@@ -27,9 +28,9 @@ def getprice(update, context):
     msg = message_text.replace(" ","").split(",")
     ans = get_price(msg[0], msg[1])
     if ans == False:
-        context.bot.send_message(chat_id=update.message.chat_id, text="Your Price Alert Was NOT Set Successfully")   
+        context.bot.send_message(chat_id=update.message.chat_id, text="Invalid Trading Pair or Exchange")   
     else:
-        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1] + " on " + msg[0] + " is " + str(ans))
+        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1].upper() + " on " + msg[0] + " is " + "{:.8f}".format(float(ans)))
 
 
 # /setalert command
@@ -85,4 +86,6 @@ if __name__ == "__main__":
     dispatcher.add_handler(help_handler)     
     setalert_handler = CommandHandler('setalert', setalert)
     dispatcher.add_handler(setalert_handler)
+    getprice_handler = CommandHandler('getprice', getprice)
+    dispatcher.add_handler(getprice_handler)
     updater.start_polling()
