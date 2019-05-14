@@ -7,7 +7,7 @@ This bot allows users to set price alerts and fetch the current price of any coi
 
 Bot Username: @CryptoPriceNotificationBot
 
-Send the bot the following message to get started:\n
+Send the bot the following message to get started:
 /help
 
 
