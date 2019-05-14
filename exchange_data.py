@@ -60,6 +60,8 @@ def get_price(exchange, pair):
         return get_binance(pair)
     elif exchange.lower() == 'qtrade':
         return get_qtrade(pair)
+    elif exchange.lower() == 'bittrex':
+        return get_bittrex(pair)
     else:
         return False
 
