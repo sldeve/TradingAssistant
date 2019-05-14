@@ -1,5 +1,5 @@
 # Cryptocurrency Price Alert Bot
-This bot allows users to set price alerts and fetch the current price of any coin on the following exchanges:\n
+This bot allows users to set price alerts and fetch the current price of any coin on the following exchanges:
 * Binance
 * BitMex
 * Bittrex
