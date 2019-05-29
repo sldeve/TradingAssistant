@@ -12,8 +12,8 @@ Send the bot the following message to get started:
 /help
 
 ## Running your own implementation
-In order to run your own implementation of this price alrt bot, complete the following steps:
-1. Create a new telegram bot https://core.telegram.org/bots
+In order to run your own implementation of this price alert bot, complete the following steps:
+1. Create a new Telegram bot https://core.telegram.org/bots
 2. Fork this repository 
 3. Change into the forked repository directory and open the bot.py file
 4. On line 7 replace "INSERT TOKEN HERE" with your bot token
