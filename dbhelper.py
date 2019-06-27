@@ -2,7 +2,7 @@ import sqlite3
 
 class DBHelper:
 
-    def __init(self, dbname="alerts.db"):
+    def __init__(self, dbname="alerts.db"):
         # sets database name and establishes a connection to it
         self.dbname = dbname
         self.conn = sqlite3.connect(dbname)
@@ -21,4 +21,12 @@ class DBHelper:
     
     def remove_alert(self, id):
         remove = "DELETE FROM requests WHERE id = (?)"
-        self.conn.execute()
+        id_tuple = (id,)
+        self.conn.execute(remove,id_tuple)
+        self.conn.commit()
+
+    def get_table(self):
+        table = []
+        for row in self.conn.execute('SELECT * FROM requests'):
+            table.append(row)
+        return table
