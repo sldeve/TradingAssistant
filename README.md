@@ -12,7 +12,12 @@ Send the bot the following message to get started:
 /help
 
 ## Running your own implementation
-In order to run your own implementation of this price alert bot, complete the following steps:
+First make sure you have the following requirements installed:
+* Python 3
+* requests module `pip3 install requests`
+* python-telegram-bot https://python-telegram-bot.org
+
+In order to run your own implementation, complete the following steps:
 1. Create a new Telegram bot https://core.telegram.org/bots
 2. Fork this repository 
 3. Change into the forked repository directory and open the bot.py file
