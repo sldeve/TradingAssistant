@@ -34,7 +34,7 @@ def get_bittrex(pair):
 
 def get_qtrade(pair):
     data = requests.get("https://api.qtrade.io/v1/tickers").json()
-    data =data['data']['markets']
+    data = data['data']['markets']
     for i in data:
         if i['id_hr'].replace('_','') == pair.upper():
             return float(i['last'])
