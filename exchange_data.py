@@ -6,7 +6,9 @@ for a matching ticker. If one is found, the last price is returned.
 
 import requests, json
 
-#bitmex
+# Pairs should be inputted without special characters. 
+# Ex) BTCUSD not BTC/USD
+
 def get_bitmex(pair):
     data = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
     for i in data:
@@ -14,7 +16,6 @@ def get_bitmex(pair):
             return float(i['lastPrice'])
     return False
 
-# binance
 def get_binance(pair):
     data = requests.get("https://api.binance.com/api/v1/ticker/24hr").content.decode("utf-8")
     data = json.loads(''.join(data))
@@ -22,7 +23,7 @@ def get_binance(pair):
         if pair.upper() == i['symbol']:
             return float(i['lastPrice'])
     return False
-# bittrex
+
 def get_bittrex(pair):
     data = requests.get("https://api.bittrex.com/api/v1.1/public/getmarketsummaries").json()
     data = data['result']
@@ -31,7 +32,6 @@ def get_bittrex(pair):
             return float(i['Last'])
     return False
 
-# qtrade
 def get_qtrade(pair):
     data = requests.get("https://api.qtrade.io/v1/tickers").json()
     data =data['data']['markets']
@@ -40,7 +40,6 @@ def get_qtrade(pair):
             return float(i['last'])
     return False
 
-#coinbase pro
 def get_coinbase_pro(pair):
     data = requests.get("https://api.pro.coinbase.com/products").json()
     for i in data:
