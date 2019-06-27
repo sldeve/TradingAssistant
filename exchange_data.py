@@ -63,3 +63,4 @@ def get_price(exchange, pair):
         return get_coinbase_pro(pair)
     else:
         return False
+

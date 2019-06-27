@@ -1,6 +1,6 @@
 import logging
 import telegram
-from exchange_data import get_bitmex, get_binance, get_qtrade, get_price
+from exchange_data import *
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
