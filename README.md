@@ -1,4 +1,4 @@
-# Cryptocurrency Price Alert Bot
+# TradingAssistant Bot
 This bot allows users to set price alerts and fetch the current price of any coin on the following exchanges:
 * Binance
 * BitMex
@@ -10,6 +10,11 @@ Bot Username: @CryptoPriceNotificationBot
 
 Send the bot the following message to get started:
 /help
+
+#### Coming Soon
+* Alerts Based on Technical Indicators
+* Alerts Based on Large Price Movements
+* Sentiment Analysis
 
 ## Running your own implementation
 First make sure you have the following requirements installed:
