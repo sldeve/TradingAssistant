@@ -15,10 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 
-instructions = ("This is the Cryptocurrency Price Alert Bot\n" +
-"To set a price alert,use the setalert command and enter an exchange, trading pair and price as follows:\n" + 
-"/setalert binance,btcusdc,20000\n" + "To get the current price of a coin on a supported exchange use the getprice command:\n"+
-"/getprice qtrade, nyzobtc ")
+instructions = ("This is the Cryptocurrency Price Alert Bot\n To set a price alert,use the setalert command and enter an exchange, trading pair and price as follows:\n /setalert binance,btcusdc,20000\n To get the current price of a coin on a supported exchange use the getprice command:\n /getprice qtrade, nyzobtc ")
 
 # /help command
 def help(update, context):
