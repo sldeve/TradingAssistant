@@ -11,7 +11,7 @@ Bot Username: @CryptoPriceNotificationBot
 Send the bot the following message to get started:
 /help
 
-#### Coming Soon
+#### In Development
 * Alerts Based on Technical Indicators
 * Alerts Based on Large Price Movements
 * Sentiment Analysis
