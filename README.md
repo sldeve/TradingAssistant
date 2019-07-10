@@ -6,6 +6,10 @@ This bot allows users to set price alerts and fetch the current price of any coi
 * Bittrex
 * Qtrade
 
+This bot can now additionally set price alerts and fetch the currnet price of the following:
+* Foreign exchange traded currencies
+* Securities found on NYSE and NASDAQ
+
 Bot Username: @CryptoPriceNotificationBot
 
 Send the bot the following message to get started:
