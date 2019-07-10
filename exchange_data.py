@@ -55,17 +55,20 @@ def get_coinbase_pro(pair):
 # FOREIGN EXCHANGE CURRENCIES
 
 def get_forex(pair):
-    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+ pair[0:3] +"&to_currency="+ pair[3::] +"&apikey=INSERT API KEY HERE"
+    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+ pair[0:3] +"&to_currency="+ pair[3::] +"&apikey=INSERT TOKEN HERE"
     data = requests.get(url).json()
-    return data['Realtime Currency Exchange Rate']['5. Exchange Rate']
+    return float(data['Realtime Currency Exchange Rate']['5. Exchange Rate'])
 
 
 # STOCK PRICES
 
 def get_stock(symbol):
-    url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+symbol+"&apikey=INSERT API KEY HERE"
-    data = requests.get(url).json()
-    return data["Global Quote"]["05. price"]
+    try:
+        url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+symbol+"&apikey=INSERT TOKEN HERE"
+        data = requests.get(url).json()
+        return float(data["Global Quote"]["05. price"])
+    except:
+        return False
 
 def get_price(exchange, pair):
     if exchange.lower() == 'bitmex':
@@ -79,8 +82,9 @@ def get_price(exchange, pair):
     elif exchange.lower() == 'coinbasepro':
         return get_coinbase_pro(pair)
     elif exchange.lower() == "forex":
-        return get_forex(pair) 
+        return get_forex(pair.upper()) 
     elif exchange.lower() == 'stock':
-        return get_stock(pair)
+        return get_stock(pair.upper())
     else:
         return False
+

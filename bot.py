@@ -73,7 +73,10 @@ def check_prices(context):
     for row in table:
         cur_price = get_price(row[1],row[2])
         if row[5] == '>' and cur_price >= float(row[3]) or row[5] == '<' and cur_price <= float(row[3]):
-            response = row[2].upper() + " has reached " + row[3] + " on " + row[1]
+            if row[1] == "stock":
+                response = row[2].upper() + " has reached " + row[3]
+            else:
+                response = row[2].upper() + " has reached " + row[3] + " on " + row[1]
             db.remove_alert(row[0])
             context.bot.send_message(chat_id = row[4], text = response )
         
@@ -83,7 +86,7 @@ if __name__ == "__main__":
     db.setup()
 
     # bot checks prices with an interval of every 5 seconds    
-    job_check_prices = j.run_repeating(check_prices, interval= 5, first =0)
+    job_check_prices = j.run_repeating(check_prices, interval= 20, first =0)
     # create and add handlers to dispatcher
     help_handler = CommandHandler('help', help)
     dispatcher.add_handler(help_handler)     
@@ -92,3 +95,4 @@ if __name__ == "__main__":
     getprice_handler = CommandHandler('getprice', getprice)
     dispatcher.add_handler(getprice_handler)
     updater.start_polling()
+
