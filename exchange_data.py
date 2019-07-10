@@ -1,13 +1,15 @@
 """
-Module containing functions that fetch current cryptocurrency prices from exchanges.
-Each function takes the trading pair as a parameter and then checks the exchanges api
-for a matching ticker. If one is found, the last price is returned.
+Module containing functions that fetch current cryptocurrency, physical currency and stock
+prices from exchanges. Each function takes the trading pair as a parameter and then checks 
+the exchanges api for a matching ticker. If one is found, the last price is returned.
 """
 
 import requests, json
 
 # Pairs should be inputted without special characters. 
 # Ex) BTCUSD not BTC/USD
+
+# CRYPTOCURRENCIES
 
 def get_bitmex(pair):
     data = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
@@ -49,6 +51,22 @@ def get_coinbase_pro(pair):
             return float(price['price'])
     return False
 
+
+# FOREIGN EXCHANGE CURRENCIES
+
+def get_forex(pair):
+    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+ pair[0:3] +"&to_currency="+ pair[3::] +"&apikey=INSERT API KEY HERE"
+    data = requests.get(url).json()
+    return data['Realtime Currency Exchange Rate']['5. Exchange Rate']
+
+
+# STOCK PRICES
+
+def get_stock(symbol):
+    url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+symbol+"&apikey=INSERT API KEY HERE"
+    data = requests.get(url).json()
+    return data["Global Quote"]["05. price"]
+
 def get_price(exchange, pair):
     if exchange.lower() == 'bitmex':
         return get_bitmex(pair)
@@ -60,6 +78,9 @@ def get_price(exchange, pair):
         return get_bittrex(pair)
     elif exchange.lower() == 'coinbasepro':
         return get_coinbase_pro(pair)
+    elif exchange.lower() == "forex":
+        return get_forex(pair) 
+    elif exchange.lower() == 'stock':
+        return get_stock(pair)
     else:
         return False
-
