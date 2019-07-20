@@ -92,7 +92,7 @@ if __name__ == "__main__":
     db = DBHelper()
     db.setup()
 
-    # bot checks prices with an interval of every 5 seconds    
+    # bot checks prices with an interval of every 20 seconds    
     job_check_prices = j.run_repeating(check_prices, interval= 20, first =0)
     # create and add handlers to dispatcher
     help_handler = CommandHandler('help', help)
