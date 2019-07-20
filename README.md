@@ -1,16 +1,18 @@
 # TradingAssistant Bot
-This bot allows users to set price alerts and fetch the current price of any coin on the following exchanges:
+This bot allows users to set price alerts and fetch the current price of any cryptocurrency on the following exchanges:
 * Binance
 * BitMex
 * Coinbase Pro
 * Bittrex
 * Qtrade
 
-This bot can now additionally set price alerts and fetch the currnet price of the following:
+This bot can additionally set price alerts and fetch the current price of the following:
 * Foreign exchange traded currencies
 * Securities found on NYSE and NASDAQ
 
-Bot Username: @CryptoPriceNotificationBot
+Bot Username: @The_Trading_Assistant_bot  
+
+Link: http://t.me/The_Trading_Assistant_bot  
 
 Send the bot the following message to get started:
 /help
@@ -27,11 +29,13 @@ First make sure you have the following requirements installed:
 * python-telegram-bot https://python-telegram-bot.org
 
 In order to run your own implementation, complete the following steps:
-1. Create a new Telegram bot https://core.telegram.org/bots
-2. Fork this repository 
-3. Change into the forked repository directory and open the bot.py file
-4. On line 7 replace "INSERT TOKEN HERE" with your bot token
-5. Run bot.py
-6. Enjoy
+1. Create a new Telegram bot https://core.telegram.org/bots and save your bot token
+2. Generate a new API Key at https://alphavantage.co
+3. Fork this repository 
+4. Change into the forked repository directory and open the bot.py file
+5. In bot.py replace "INSERT TOKEN HERE" with your bot token
+6. In exchange_data.py replace "INSERT TOKEN HERE" with your alphavantage API key
+7. Run bot.py
+8. Enjoy
 
 

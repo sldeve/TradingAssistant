@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 
-instructions = ("This is the TradingAssistant Bot\n To set a price alert,use the setalert command and enter an exchange, trading pair and price as follows:\n /setalert binance,btcusdc,20000\n To get the current price of a coin on a supported exchange use the getprice command:\n /getprice qtrade, nyzobtc \n /getprice eurusd, forex ")
+instructions = ("This is the TradingAssistant Bot.\n\nTo set a price alert for a currency, use the setalert command and enter an exchange, trading pair and price as follows:\n\n /setalert binance,btcusdc,20000\n\n /setalert forex,usdeur,0.99\n\nIf you are setting a price alert for a stock, use the following format:\n\n /setalert stock,tsla,250\n\nTo get the current price of a currency or stock use the getprice command:\n\n /getprice qtrade, nyzobtc \n\n /getprice eurusd, forex\n\n /getprice stock,msft\n\n *note: capitalization does not matter and a single space can be typed after commas ")
 
 # /help command
 def help(update, context):
@@ -26,10 +26,17 @@ def getprice(update, context):
     message_text = update.message.text[10::]
     msg = message_text.replace(" ","").split(",")
     ans = get_price(msg[0], msg[1])
+
+    # changes print string for currencies vs stocks
+    if msg[0].lower() == "stock":
+        exchange = ""
+    else:
+        exchange = " on " + msg[0]
+
     if ans == False:
         context.bot.send_message(chat_id=update.message.chat_id, text="Invalid Trading Pair or Exchange")   
     else:
-        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1].upper() + " on " + msg[0] + " is " + "{:.8f}".format(float(ans)))
+        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1].upper() + exchange + " is " + "{:.8f}".format(float(ans)))
 
 # /setalert command
 def setalert(update, context):
