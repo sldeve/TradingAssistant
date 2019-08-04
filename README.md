@@ -26,7 +26,7 @@ Send the bot the following message to get started:
 First make sure you have the following requirements installed:
 * Python 3
 * requests module `pip3 install requests`
-* python-telegram-bot https://python-telegram-bot.org
+* python-telegram-bot beta version 12.0 https://python-telegram-bot.org
 
 In order to run your own implementation, complete the following steps:
 1. Create a new Telegram bot https://core.telegram.org/bots and save your bot token
