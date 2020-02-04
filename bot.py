@@ -4,8 +4,12 @@ from exchange_data import *
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from dbhelper import DBHelper
+from bitmex import get_current_positions, get_position_list, display_positions
 
-updater = Updater(token="INSERT TOKEN HERE", use_context=True)
+api_id = 'INSERT BITMEX API ID HERE'
+api_secret = 'INSERT BITMEX SECRET KEY HERE'
+
+updater = Updater(token="INSERT BOT TOKEN HERE", use_context=True)
 
 j = updater.job_queue
 
@@ -15,28 +19,29 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 
-instructions = ("This is the TradingAssistant Bot.\n\nTo set a price alert for a currency, use the setalert command and enter an exchange, trading pair and price as follows:\n\n /setalert binance,btcusdc,20000\n\n /setalert forex,usdeur,0.99\n\nIf you are setting a price alert for a stock, use the following format:\n\n /setalert stock,tsla,250\n\nTo get the current price of a currency or stock use the getprice command:\n\n /getprice qtrade, nyzobtc \n\n /getprice eurusd, forex\n\n /getprice stock,msft\n\n *note: capitalization does not matter and a single space can be typed after commas ")
+instructions = ("This is the TradingAssistant Bot.\n\nTo set a price alert for a currency, use the setalert command and enter an exchange, trading pair and price as follows:\n\n /setalert binance,btcusdc,20000\n\n /setalert forex,usdeur,0.99\n\nIf you are setting a price alert for a stock, use the following format:\n\n /setalert stock,tsla,250\n\nTo get the current price of a currency or stock use the getprice command:\n\n /getprice qtrade, nyzobtc \n\n /getprice forex, eurusd\n\n /getprice stock,msft\n\n *note: capitalization does not matter and a single space can be typed after commas ")
+
 
 # /help command
 def help(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text=instructions)
+
+# /position command
+def positions(update, context):
+    if update.message.chat.type == "private" and update.message.chat.username == "my_username":
+        context.bot.send_message(chat_id=update.message.chat_id, text=display_positions(api_secret, api_id))
+    else:
+        context.bot.send_message(chat_id=update.message.chat_id, text="Sorry, only my creator can use this function.")
 
 # /getprice command, bot can fetch the price on any supported exchange
 def getprice(update, context):
     message_text = update.message.text[10::]
     msg = message_text.replace(" ","").split(",")
     ans = get_price(msg[0], msg[1])
-
-    # changes print string for currencies vs stocks
-    if msg[0].lower() == "stock":
-        exchange = ""
-    else:
-        exchange = " on " + msg[0]
-
     if ans == False:
         context.bot.send_message(chat_id=update.message.chat_id, text="Invalid Trading Pair or Exchange")   
     else:
-        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1].upper() + exchange + " is " + "{:.8f}".format(float(ans)))
+        context.bot.send_message(chat_id=update.message.chat_id, text="The current price of " + msg[1].upper() + " on " + msg[0] + " is " + "{:.8f}".format(float(ans)))
 
 # /setalert command
 def setalert(update, context):
@@ -91,15 +96,15 @@ if __name__ == "__main__":
     #initialize database
     db = DBHelper()
     db.setup()
-
-    # bot checks prices with an interval of every 20 seconds    
+    # bot checks prices with an interval of every 5 seconds    
     job_check_prices = j.run_repeating(check_prices, interval= 20, first =0)
     # create and add handlers to dispatcher
     help_handler = CommandHandler('help', help)
-    dispatcher.add_handler(help_handler)     
+    dispatcher.add_handler(help_handler)
+    position_handler = CommandHandler('positions', positions)
+    dispatcher.add_handler(position_handler)         
     setalert_handler = CommandHandler('setalert', setalert)
     dispatcher.add_handler(setalert_handler)
     getprice_handler = CommandHandler('getprice', getprice)
     dispatcher.add_handler(getprice_handler)
     updater.start_polling()
-
