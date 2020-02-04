@@ -38,4 +38,13 @@ In order to run your own implementation, complete the following steps:
 7. Run bot.py
 8. Enjoy
 
+### Displaying current open positions
+The TradingAssistant now has the capability to fetch all of your current open positions from BitMex and displays them in a formatted message. Due to privacy and security concerns the only way to access this feature is to run your own implementation of the bot.
 
+In order to enable the position command on your own implementation, complete the following steps:
+1. Generate and securely store BitMex API Keys
+2. Open the bitmex.py file then replace the api_id and api_secret variables with their respective values.
+3. Open the bot.py file then replace the api_id and api_secret variables with their respective values.
+4. Save changes
+5. Run bot.py
+6. Enjoy
