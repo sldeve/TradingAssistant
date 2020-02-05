@@ -61,6 +61,6 @@ def display_positions(secret, id_api):
     position_list = get_position_list(secret, id_api)
     position_string = ""
     for pos in position_list:
-        position_string += str(pos) + "\n\n"
+        position_string += (str(pos) + "\n")
     return position_string
 
