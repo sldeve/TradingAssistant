@@ -60,7 +60,10 @@ def get_position_list(secret, id_api):
 def display_positions(secret, id_api):
     position_list = get_position_list(secret, id_api)
     position_string = ""
+    total_unrealised_pnl = 0.0
     for pos in position_list:
-        position_string += (str(pos) + "\n")
+        total_unrealised_pnl += float(pos.unrealised_pnl)
+        position_string += str(pos) + "\n"
+    position_string +="\nTotal Unrealised PNL: " + str(format(total_unrealised_pnl/100000000, 'f')) + " XBT"
     return position_string
 
