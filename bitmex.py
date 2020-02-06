@@ -4,6 +4,7 @@ import hashlib
 import hmac
 from urllib.parse import urlparse
 from position import Position
+from exchange_data import get_bitmex
 
 
 api_id = 'INSERT BITMEX ID HERE'
@@ -67,3 +68,20 @@ def display_positions(secret, id_api):
     position_string +="\nTotal Unrealised PNL: " + str(format(total_unrealised_pnl/100000000, 'f')) + " XBT"
     return position_string
 
+#BALANCE FUNCTIONS
+
+def balance_info(secret, id_api):
+    expires = int(round(time.time()) + 5000)
+    sig = generate_signature(secret, 'GET', '/api/v1/user/margin', expires, '')
+
+    response = requests.get(
+        'https://bitmex.com/api/v1/user/margin',
+        headers={'api-expires': str(expires), 'api-key': id_api, 'api-signature': sig},
+    )
+    balance_data = response.json()
+    return balance_data
+
+def display_balance_info(secret, id_api):
+    balance_data = balance_info(secret, id_api)
+    balance_string = "Wallet Balance: " + str(format(balance_data['walletBalance'] / 100000000, 'f')) + " XBT" +" | $"+ str(round((balance_data['walletBalance']/100000000)*get_bitmex("xbtusd"), 2)) +"\n" + "Unrealised PNL: " + str(format(balance_data['unrealisedPnl'] / 100000000, 'f')) + " XBT" +" | $"+ str(round((balance_data['unrealisedPnl']/100000000)*get_bitmex("xbtusd"), 2)) +"\n"  + "Margin Balance: " + str(format(balance_data['marginBalance'] / 100000000, 'f')) + " XBT"" | $"+ str(round((balance_data['marginBalance']/100000000)*get_bitmex("xbtusd"), 2)) +"\n" + "Available Balance: " + str(format(balance_data['withdrawableMargin'] / 100000000, 'f')) + " XBT" " | $"+ str(round((balance_data['withdrawableMargin']/100000000)*get_bitmex("xbtusd"), 2)) +"\n" 
+    return balance_string

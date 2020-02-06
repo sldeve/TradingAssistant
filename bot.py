@@ -4,7 +4,7 @@ from exchange_data import *
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from dbhelper import DBHelper
-from bitmex import get_current_positions, get_position_list, display_positions
+from bitmex import *
 
 api_id = 'INSERT BITMEX API ID HERE'
 api_secret = 'INSERT BITMEX SECRET KEY HERE'
@@ -30,6 +30,13 @@ def help(update, context):
 def positions(update, context):
     if update.message.chat.type == "private" and update.message.chat.username == "my_username":
         context.bot.send_message(chat_id=update.message.chat_id, text=display_positions(api_secret, api_id))
+    else:
+        context.bot.send_message(chat_id=update.message.chat_id, text="Sorry, only my creator can use this function.")
+
+# /balance command
+def balance(update, context):
+    if update.message.chat.type == "private" and update.message.chat.username == "scuba_steve2345":
+        context.bot.send_message(chat_id=update.message.chat_id, text=display_balance_info(api_secret, api_id))
     else:
         context.bot.send_message(chat_id=update.message.chat_id, text="Sorry, only my creator can use this function.")
 
@@ -102,7 +109,9 @@ if __name__ == "__main__":
     help_handler = CommandHandler('help', help)
     dispatcher.add_handler(help_handler)
     position_handler = CommandHandler('positions', positions)
-    dispatcher.add_handler(position_handler)         
+    dispatcher.add_handler(position_handler)
+    balance_handler = CommandHandler('balance', balance)
+    dispatcher.add_handler(balance_handler)         
     setalert_handler = CommandHandler('setalert', setalert)
     dispatcher.add_handler(setalert_handler)
     getprice_handler = CommandHandler('getprice', getprice)
