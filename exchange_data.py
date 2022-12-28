@@ -58,10 +58,6 @@ def get_price(exchange, pair):
         return get_bitmex(pair)
     elif exchange.lower() == 'binance':
         return get_binance(pair)
-    elif exchange.lower() == 'qtrade':
-        return get_qtrade(pair)
-    elif exchange.lower() == 'bittrex':
-        return get_bittrex(pair)
     elif exchange.lower() == 'coinbase':
         return get_coinbase_pro(pair)
     elif exchange.lower() == "forex":
