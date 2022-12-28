@@ -19,30 +19,14 @@ def get_bitmex(pair):
     return False
 
 def get_binance(pair):
-    data = requests.get("https://api.binance.com/api/v1/ticker/24hr").content.decode("utf-8")
+    data = requests.get("https://api.binance.us/api/v1/ticker/24hr").content.decode("utf-8")
     data = json.loads(''.join(data))
     for i in data:
         if pair.upper() == i['symbol']:
             return float(i['lastPrice'])
     return False
 
-def get_bittrex(pair):
-    data = requests.get("https://api.bittrex.com/api/v1.1/public/getmarketsummaries").json()
-    data = data['result']
-    for i in data:
-        if i['MarketName'].replace('-','') == pair.upper():
-            return float(i['Last'])
-    return False
-
-def get_qtrade(pair):
-    data = requests.get("https://api.qtrade.io/v1/tickers").json()
-    data = data['data']['markets']
-    for i in data:
-        if i['id_hr'].replace('_','') == pair.upper():
-            return float(i['last'])
-    return False
-
-def get_coinbase_pro(pair):
+def get_coinbase(pair):
     data = requests.get("https://api.pro.coinbase.com/products").json()
     for i in data:
         ticker = i['id']
@@ -50,7 +34,6 @@ def get_coinbase_pro(pair):
             price = requests.get("https://api.pro.coinbase.com/products/"+ticker+"/ticker").json()
             return float(price['price'])
     return False
-
 
 # FOREIGN EXCHANGE CURRENCIES
 
@@ -64,9 +47,9 @@ def get_forex(pair):
 
 def get_stock(symbol):
     try:
-        url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+symbol+"&apikey=INSERT TOKEN HERE"
+        url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=+"+symbol+"+&types=price&token=INSERT API KEY HERE"
         data = requests.get(url).json()
-        return float(data["Global Quote"]["05. price"])
+        return float(data[symbol]['price'])
     except:
         return False
 
@@ -79,7 +62,7 @@ def get_price(exchange, pair):
         return get_qtrade(pair)
     elif exchange.lower() == 'bittrex':
         return get_bittrex(pair)
-    elif exchange.lower() == 'coinbasepro':
+    elif exchange.lower() == 'coinbase':
         return get_coinbase_pro(pair)
     elif exchange.lower() == "forex":
         return get_forex(pair.upper()) 
@@ -87,4 +70,3 @@ def get_price(exchange, pair):
         return get_stock(pair.upper())
     else:
         return False
-

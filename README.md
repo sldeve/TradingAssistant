@@ -2,9 +2,7 @@
 This bot allows users to set price alerts and fetch the current price of any cryptocurrency on the following exchanges:
 * Binance
 * BitMex
-* Coinbase Pro
-* Bittrex
-* Qtrade
+* Coinbase
 
 This bot can additionally set price alerts and fetch the current price of the following:
 * Foreign exchange traded currencies

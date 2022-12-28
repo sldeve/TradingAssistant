@@ -19,7 +19,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 
-instructions = ("This is the TradingAssistant Bot.\n\nTo set a price alert for a currency, use the setalert command and enter an exchange, trading pair and price as follows:\n\n /setalert binance,btcusdc,20000\n\n /setalert forex,usdeur,0.99\n\nIf you are setting a price alert for a stock, use the following format:\n\n /setalert stock,tsla,250\n\nTo get the current price of a currency or stock use the getprice command:\n\n /getprice qtrade, nyzobtc \n\n /getprice forex, eurusd\n\n /getprice stock,msft\n\n *note: capitalization does not matter and a single space can be typed after commas ")
+instructions = ("This is the TradingAssistant Bot.\n\nTo set a price alert for a currency, use the setalert command and enter an exchange, trading pair and price as follows:\n\n /setalert binance,btcusdc,20000\n\n /setalert forex,usdeur,0.99\n\nIf you are setting a price alert for a stock, use the following format:\n\n /setalert stock,tsla,250\n\nTo get the current price of a currency or stock use the getprice command:\n\n /getprice binance, btcusd \n\n /getprice forex, eurusd\n\n /getprice stock,msft\n\n *note: capitalization does not matter and a single space can be typed after commas ")
 
 
 # /help command
